@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Disclosure in Podcasting: A Decision Framework</title>
-<meta name="description" content="When should podcast creators label their episodes as AI-generated? A clear framework based on Apple, YouTube, Meta, EU AI Act, and industry standards.">
-<meta property="og:title" content="AI Disclosure in Podcasting: A Decision Framework">
-<meta property="og:description" content="When should podcast creators label their episodes as AI-generated? A substance-based framework for the podcasting community.">
-<meta property="og:type" content="article">
+<title>Should I Disclose AI in My Podcast? — A Decision Tool</title>
+<meta name="description" content="Answer a few questions to find out if your podcast episode needs AI disclosure. A clear, actionable set of rules for podcasters.">
+<meta property="og:title" content="Should I Disclose AI in My Podcast? — A Decision Tool">
+<meta property="og:description" content="Answer a few questions to find out if your podcast episode needs AI disclosure.">
+<meta property="og:type" content="website">
 <style>
   *, *::before, *::after {
     box-sizing: border-box;
@@ -28,279 +28,451 @@
     --green: #16A34A;
     --green-bg: #F0FDF4;
     --green-border: #BBF7D0;
-    --red: #DC2626;
     --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
     --radius: 12px;
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     background: var(--bg);
     color: var(--text);
-    line-height: 1.7;
-    padding: 32px 16px 64px;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
   }
 
   .container {
-    max-width: 720px;
-    margin: 0 auto;
+    max-width: 640px;
+    width: 100%;
   }
 
-  /* ---- Header ---- */
-  .page-header {
+  .header {
     text-align: center;
-    margin-bottom: 48px;
-    padding-bottom: 32px;
-    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
   }
 
-  .page-header h1 {
-    font-size: 36px;
+  .header h1 {
+    font-size: 32px;
     font-weight: 700;
     letter-spacing: -0.5px;
     margin-bottom: 12px;
     color: var(--text);
-    line-height: 1.2;
   }
 
-  .page-header .lead {
-    font-size: 18px;
+  .header p {
+    font-size: 17px;
     color: var(--text-secondary);
-    max-width: 560px;
-    margin: 0 auto 20px;
+    max-width: 520px;
+    margin: 0 auto;
   }
 
-  .cta-banner {
+  .header .subtitle {
+    font-size: 14px;
+    color: var(--text-tertiary);
+    margin-top: 8px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 28px;
+  }
+
+  .progress-dot {
+    height: 4px;
+    flex: 1;
+    border-radius: 2px;
+    background: var(--border);
+    transition: background var(--transition);
+  }
+
+  .progress-dot.active { background: var(--accent); }
+  .progress-dot.done { background: var(--accent); opacity: 0.5; }
+
+  .step-label {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  .question-container {
+    display: none;
+    animation: fadeIn 0.35s ease;
+  }
+
+  .question-container.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .question-text {
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .question-hint {
+    font-size: 14px;
+    color: var(--text-tertiary);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  .question-examples {
+    background: #F9FAFB;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .question-examples + .question-examples { margin-top: 8px; }
+
+  .question-examples strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-tertiary);
+  }
+
+  .question-examples ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+
+  .question-examples li { margin-bottom: 2px; }
+
+  .btn-group {
+    display: flex;
+    gap: 12px;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 14px 24px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+    background: var(--card-bg);
+    color: var(--text);
+    text-align: center;
+  }
+
+  .btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+
+  .btn:active { transform: scale(0.98); }
+
+  .btn-yes {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .btn-yes:hover {
+    background: var(--accent);
+    color: white;
+  }
+
+  .result-container {
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .result-container.active { display: block; }
+
+  .result-icon {
+    margin-bottom: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+  }
+
+  .result-icon-yes {
+    background: var(--green);
+  }
+
+  .result-icon-yes::after {
+    content: "\2713";
+    color: white;
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .result-icon-no {
+    background: var(--border);
+  }
+
+  .result-icon-no::after {
+    content: "\2713";
+    color: white;
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .result-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .result-body {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  .result-body strong { color: var(--text); }
+
+  .result-disclose {
+    background: var(--green-bg);
+    border: 1px solid var(--green-border);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+  }
+
+  .result-disclose .result-title { color: var(--green); }
+
+  .result-no {
+    background: #F9FAFB;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+  }
+
+  .result-no .result-title { color: var(--text); }
+
+  .result-reason {
+    font-size: 14px;
+    color: var(--text-tertiary);
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    line-height: 1.6;
+    text-align: left;
+  }
+
+  .btn-restart {
     display: inline-block;
+    margin-top: 20px;
     padding: 12px 28px;
     background: var(--accent);
     color: white;
+    border: none;
     border-radius: 10px;
-    text-decoration: none;
-    font-weight: 600;
     font-size: 15px;
-    transition: all 0.2s;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
   }
 
-  .cta-banner:hover {
+  .btn-restart:hover {
     background: var(--accent-hover);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(108, 63, 160, 0.3);
   }
 
-  /* ---- Sections ---- */
-  h2 {
-    font-size: 24px;
-    font-weight: 700;
-    margin: 48px 0 16px;
-    color: var(--text);
-    padding-top: 16px;
-  }
-
-  h3 {
-    font-size: 18px;
-    font-weight: 700;
-    margin: 32px 0 12px;
-    color: var(--text);
-  }
-
-  p {
-    margin-bottom: 16px;
-    color: var(--text-secondary);
-  }
-
-  p strong { color: var(--text); }
-
-  /* ---- Rule box ---- */
-  .rule-box {
+  .principle {
+    margin-top: 24px;
+    padding: 20px;
     background: var(--accent-light);
     border: 1px solid #E0D4F0;
     border-radius: var(--radius);
-    padding: 24px 28px;
-    margin: 24px 0;
     text-align: center;
   }
 
-  .rule-box p {
-    font-size: 20px;
-    font-weight: 700;
+  .principle p {
+    font-size: 15px;
     color: var(--accent);
+    font-weight: 600;
+    line-height: 1.5;
     margin: 0;
-    line-height: 1.4;
   }
 
-  .rule-box .attribution {
-    font-size: 13px;
+  .principle .attribution {
+    font-size: 12px;
     color: var(--text-tertiary);
     font-weight: 400;
-    margin-top: 8px;
+    margin-top: 6px;
   }
 
-  /* ---- Blockquote ---- */
-  blockquote {
-    border-left: 3px solid var(--accent);
-    padding: 12px 20px;
-    margin: 20px 0;
-    background: var(--accent-light);
-    border-radius: 0 8px 8px 0;
+  .quick-ref {
+    margin-top: 32px;
+    padding: 24px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
   }
 
-  blockquote p {
-    font-size: 17px;
-    font-weight: 600;
-    color: var(--accent);
-    margin: 0;
+  .quick-ref h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--text);
   }
 
-  /* ---- Tables ---- */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 16px 0 24px;
-    font-size: 14px;
+  .quick-ref .ref-subtitle {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    margin-bottom: 16px;
   }
 
-  thead th {
-    text-align: left;
-    padding: 10px 12px;
-    background: #F9FAFB;
-    border-bottom: 2px solid var(--border);
+  .ref-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .ref-col h4 {
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: var(--text-tertiary);
     font-weight: 700;
-  }
-
-  tbody td {
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: top;
-    color: var(--text-secondary);
-    line-height: 1.5;
-  }
-
-  tbody td strong { color: var(--text); }
-
-  tbody tr:last-child td { border-bottom: none; }
-
-  /* ---- Lists ---- */
-  ol, ul {
-    margin: 12px 0 20px;
-    padding-left: 24px;
-  }
-
-  li {
     margin-bottom: 8px;
-    color: var(--text-secondary);
   }
 
-  li strong { color: var(--text); }
+  .ref-col.disclose h4 { color: var(--green); }
+  .ref-col.no-disclose h4 { color: var(--text-tertiary); }
 
-  /* ---- Dividers ---- */
-  hr {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 40px 0;
-  }
-
-  /* ---- Tag labels ---- */
-  .tag-yes {
-    display: inline-block;
-    padding: 2px 8px;
-    background: var(--green-bg);
-    border: 1px solid var(--green-border);
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--green);
-  }
-
-  .tag-no {
-    display: inline-block;
-    padding: 2px 8px;
-    background: #F9FAFB;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text-tertiary);
-  }
-
-  /* ---- Key distinction box ---- */
-  .distinction-box {
-    background: #F9FAFB;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px 24px;
-    margin: 20px 0;
-    font-size: 14px;
-    line-height: 1.8;
-  }
-
-  .distinction-box p {
-    margin: 0;
-    color: var(--text-secondary);
-  }
-
-  .distinction-box strong { color: var(--text); }
-
-  /* ---- Sources ---- */
-  .sources-section h3 {
-    font-size: 15px;
-    margin: 24px 0 8px;
-  }
-
-  .sources-section ul {
+  .ref-col ul {
     list-style: none;
     padding: 0;
   }
 
-  .sources-section li {
-    padding: 4px 0;
-    font-size: 14px;
+  .ref-col li {
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 3px 0;
+    padding-left: 18px;
+    position: relative;
   }
 
-  .sources-section a {
-    color: var(--accent);
+  .ref-col.disclose li::before {
+    content: "\2713";
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  .ref-col.no-disclose li::before {
+    content: "\2717";
+    position: absolute;
+    left: 0;
+    color: var(--text-tertiary);
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  .cta-banner {
+    margin-top: 32px;
+    display: block;
+    text-decoration: none;
+    background: var(--accent);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    text-align: center;
+    transition: all var(--transition);
+    box-shadow: 0 2px 8px rgba(108, 63, 160, 0.2);
+  }
+
+  .cta-banner:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(108, 63, 160, 0.3);
     text-decoration: none;
   }
 
-  .sources-section a:hover { text-decoration: underline; }
+  .cta-banner .cta-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 4px;
+  }
 
-  /* ---- Footer ---- */
-  .page-footer {
-    margin-top: 64px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
+  .cta-banner .cta-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+    font-weight: 400;
+  }
+
+  .cta-banner .cta-arrow {
+    display: inline-block;
+    margin-left: 6px;
+    transition: transform var(--transition);
+  }
+
+  .cta-banner:hover .cta-arrow {
+    transform: translateX(3px);
+  }
+
+  .footer {
+    margin-top: 40px;
     text-align: center;
+    padding: 20px 0;
     font-size: 13px;
     color: var(--text-tertiary);
     line-height: 1.8;
   }
 
-  .page-footer a {
+  .footer a {
     color: var(--accent);
     text-decoration: none;
     font-weight: 500;
   }
 
-  .page-footer a:hover { text-decoration: underline; }
+  .footer a:hover { text-decoration: underline; }
 
-  .page-footer .sep {
+  .footer .sep {
     margin: 0 8px;
     opacity: 0.4;
   }
 
-  /* ---- Responsive ---- */
   @media (max-width: 480px) {
-    body { padding: 20px 12px 48px; }
-    .page-header h1 { font-size: 28px; }
-    .page-header .lead { font-size: 16px; }
-    h2 { font-size: 20px; }
-    table { font-size: 13px; }
-    thead th, tbody td { padding: 8px; }
-    .rule-box p { font-size: 17px; }
+    body { padding: 16px 12px; }
+    .header h1 { font-size: 26px; }
+    .header p { font-size: 15px; }
+    .card { padding: 24px 20px; }
+    .question-text { font-size: 19px; }
+    .btn { padding: 12px 16px; font-size: 15px; }
+    .ref-columns { grid-template-columns: 1fr; gap: 20px; }
+    .result-title { font-size: 20px; }
   }
 </style>
 </head>
@@ -308,249 +480,309 @@
 
 <div class="container">
 
-  <!-- Header -->
-  <header class="page-header">
-    <h1>AI Disclosure in Podcasting:<br>A Decision Framework</h1>
-    <p class="lead">When should podcast creators label their episodes as AI-generated? A clear, actionable set of rules built by studying what every major platform and regulatory body requires. Designed for podcasters who want a straight answer, not a legal essay.</p>
-    <a href="index.html" class="cta-banner">Try the Interactive Tool</a>
+  <header class="header">
+    <h1>Should I Disclose AI in My Podcast?</h1>
+    <p>Answer a few questions about your podcast episode to find out if it needs an AI disclosure label.</p>
+    <p class="subtitle">A clear, actionable set of rules for podcasters.</p>
   </header>
 
-  <!-- The Rule -->
-  <h2>The Rule</h2>
+  <div class="card" id="quizCard">
 
-  <div class="rule-box">
-    <p style="font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-tertiary); font-weight: 700; margin-bottom: 8px;">The Substance Test</p>
-    <p>Disclose when AI is doing the creative work your listeners came for.</p>
-  </div>
-
-  <p>The test is not "was any AI involved?" It's about <strong>substance</strong>. If AI generated or performed the core content of your episode (the voice, the narration, the conversation), that's substance. If AI helped with production (a jingle, cleanup, show notes), that's a tool.</p>
-
-  <p>Apple Podcasts uses the same concept: disclosure is required when AI generates <em>"a material portion of the podcast's audio."</em> The word <em>material</em> is doing the heavy lifting. A 10-second AI-voiced intro before 45 minutes of two human hosts is not material. A fully AI-narrated episode is.</p>
-
-  <hr>
-
-  <!-- Decision Test -->
-  <h2>The Decision Test</h2>
-
-  <p>Ask one question about each episode:</p>
-
-  <blockquote>
-    <p>"Is AI doing the creative work my listeners came for?"</p>
-  </blockquote>
-
-  <p>If AI is the <strong>performer</strong> (delivering the content listeners engage with as speech, narration, or conversation): disclose.</p>
-
-  <p>If AI is a <strong>production tool</strong> (supporting human performance with cleanup, music beds, jingles, effects, or behind-the-scenes work): don't disclose.</p>
-
-  <p>This mirrors how Apple, the EU AI Act, and the Partnership on AI all define materiality.</p>
-
-  <hr>
-
-  <!-- What Requires Disclosure -->
-  <h2>What Requires Disclosure</h2>
-
-  <p>These are cases where AI is doing the substantive creative work:</p>
-
-  <table>
-    <thead><tr><th>Use Case</th><th>Why</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Fully AI-generated narration</strong><br>A synthetic voice delivers the episode</td><td>AI is the performer. The voice the listener came for is not human. Clearest case.</td></tr>
-      <tr><td><strong>AI dialogue or conversation</strong><br>e.g., NotebookLM-style two-host discussions</td><td>Both "hosts" are synthetic. AI is doing all the performative work.</td></tr>
-      <tr><td><strong>AI-translated episodes</strong><br>Your voice cloned into another language</td><td>The entire audio in that language is AI-generated. The substance of that version is synthetic.</td></tr>
-      <tr><td><strong>AI voice delivering content segments</strong><br>AI reads listener questions, narrates sections</td><td>AI is delivering content the listener engages with as speech. That's substance, not production.</td></tr>
-      <tr><td><strong>Self-voice cloning + AI-written content</strong><br>AI wrote the script AND generated the audio</td><td>AI is doing the creative work at every level. The ideas aren't yours, the words aren't yours, and the performance is synthetic.</td></tr>
-      <tr><td><strong>Human voice + fully AI-written script</strong><br>You recorded yourself reading AI-generated content</td><td>AI created the substance your listeners came for. You performed it, but the creative work (ideas, words, narrative) is AI's.</td></tr>
-    </tbody>
-  </table>
-
-  <hr>
-
-  <!-- Voice Cloning -->
-  <h2>The Voice Cloning Question</h2>
-
-  <p>Self-voice cloning is the hardest case in this framework. It requires separating two things: the <strong>creative substance</strong> and the <strong>delivery method</strong>.</p>
-
-  <table>
-    <thead><tr><th>What happened</th><th>Creative substance</th><th>Disclose?</th></tr></thead>
-    <tbody>
-      <tr><td><strong>You wrote the script.</strong> AI cloned your voice to narrate it.</td><td><strong>Yours.</strong> Your ideas, your research, your words, your editorial judgment.</td><td><span class="tag-no">No</span><br>AI is a production method, not the creator.</td></tr>
-      <tr><td><strong>AI wrote the script.</strong> AI cloned your voice to narrate it.</td><td><strong>AI's.</strong> The ideas, words, and performance are all synthetic.</td><td><span class="tag-yes">Yes</span><br>AI is doing the creative work at every level.</td></tr>
-      <tr><td><strong>You wrote part, AI wrote part.</strong> AI cloned your voice.</td><td><strong>Mixed.</strong></td><td>Use judgment. If AI generated a material portion of the content, disclose.</td></tr>
-    </tbody>
-  </table>
-
-  <p><strong>Why this distinction matters:</strong> When you write your own script and use your cloned voice to deliver it, the creative work your listeners came for (your perspective, your expertise, your personality, your editorial voice) is 100% yours. AI is just the delivery mechanism. This is closer to choosing a microphone than to delegating creative work.</p>
-
-  <p>The listener came for <em>your ideas</em>. Whether you spoke those ideas into a microphone, dictated them, or produced them via voice cloning, the substance is the same.</p>
-
-  <p><strong>When you should still consider disclosure:</strong> Even when the substance is yours, if the cloned voice delivers a full episode and listeners would reasonably assume they're hearing a live recording, transparency is good practice. You don't need the AI tag for this, but a note in your show notes ("This episode was produced using my cloned voice") is a nice touch.</p>
-
-  <hr>
-
-  <!-- What Does NOT Require Disclosure -->
-  <h2>What Does NOT Require Disclosure</h2>
-
-  <p>These are cases where AI is a production tool, not a performer:</p>
-
-  <table>
-    <thead><tr><th>Use Case</th><th>Why</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Self-voice cloning + your own content</strong></td><td>Your ideas, your words, your voice. AI is the delivery method, not the creator.</td></tr>
-      <tr><td><strong>Short AI-voiced intro or outro</strong><br>A produced jingle or bumper</td><td>Production element. Not the substance of the episode. The listener came for the human hosts.</td></tr>
-      <tr><td><strong>AI-generated background music</strong><br>Ambient beds, theme music</td><td>Music supporting human content is a production choice. Like using a stock music library.</td></tr>
-      <tr><td><strong>AI sound effects</strong><br>A ding, a whoosh, a transition</td><td>Functional audio elements. Same category as stock sound libraries.</td></tr>
-      <tr><td><strong>Noise removal / audio cleanup</strong></td><td>Production tools, not content generators. Every framework exempts this.</td></tr>
-      <tr><td><strong>Filler-word removal</strong> (um, ah)</td><td>Editing, not generation. Every word the listener hears was spoken by the host.</td></tr>
-      <tr><td><strong>Audio leveling, EQ, compression, mastering</strong></td><td>Standard post-production, even when AI-powered.</td></tr>
-      <tr><td><strong>AI-generated transcripts</strong></td><td>Derivative of human-spoken audio. The audio itself is human.</td></tr>
-      <tr><td><strong>Show notes, titles, descriptions, chapters</strong></td><td>Text metadata. The listener's audio experience is unchanged.</td></tr>
-      <tr><td><strong>AI-assisted scriptwriting</strong><br>Brainstorming, outlining, research, editing suggestions</td><td>You wrote the core content. AI helped with the process, not the substance. Apple, YouTube, and Meta all explicitly exempt this.</td></tr>
-      <tr><td><strong>Research and fact-checking</strong></td><td>Tool use, not content generation.</td></tr>
-    </tbody>
-  </table>
-
-  <div class="distinction-box">
-    <p><strong>Performer vs. tool.</strong></p>
-    <p>A human host with an AI-generated jingle: AI is a tool. No disclosure.</p>
-    <p>An AI voice narrating the whole show: AI is the performer. Disclose.</p>
-    <p>Your own cloned voice reading your own script: your substance, AI delivery. No disclosure.</p>
-    <p>You recording yourself reading a fully AI-written script: AI created the substance. Disclose.</p>
-    <p>AI reading listener questions between human segments: AI is delivering content. Disclose.</p>
-  </div>
-
-  <hr>
-
-  <!-- Worked Examples -->
-  <h2>Worked Examples</h2>
-
-  <p>Because "substance" can feel subjective, here are concrete scenarios:</p>
-
-  <table>
-    <thead><tr><th>Scenario</th><th>Substance?</th><th>Disclose?</th></tr></thead>
-    <tbody>
-      <tr><td>10-sec AI voice intro, then 45 min of 2 human hosts</td><td>No. Production element.</td><td><span class="tag-no">No</span></td></tr>
-      <tr><td>AI narrates the whole episode, human only in intro/outro</td><td>Yes. AI is the performer.</td><td><span class="tag-yes">Yes</span></td></tr>
-      <tr><td>You write a script, your cloned voice delivers the full episode</td><td>No. Your ideas, your words.</td><td><span class="tag-no">No</span></td></tr>
-      <tr><td>AI writes a script, your cloned voice delivers it</td><td>Yes. AI did the creative work.</td><td><span class="tag-yes">Yes</span></td></tr>
-      <tr><td>You prompt AI to write a full script, then record yourself reading it</td><td>Yes. AI created the content.</td><td><span class="tag-yes">Yes</span></td></tr>
-      <tr><td>AI voice clone translates the full episode to Spanish</td><td>Yes. Entire version is synthetic.</td><td><span class="tag-yes">Yes</span></td></tr>
-      <tr><td>AI reads all listener questions between human segments</td><td>Yes. AI delivering content.</td><td><span class="tag-yes">Yes</span></td></tr>
-      <tr><td>AI-composed 30-sec theme music, human hosts throughout</td><td>No. Music bed.</td><td><span class="tag-no">No</span></td></tr>
-      <tr><td>NotebookLM generates a full AI conversation episode</td><td>Yes. Both speakers are AI.</td><td><span class="tag-yes">Yes</span></td></tr>
-      <tr><td>Human host, AI-composed score running under entire episode</td><td>No. Music is production.</td><td><span class="tag-no">No</span></td></tr>
-    </tbody>
-  </table>
-
-  <hr>
-
-  <!-- Why Substance -->
-  <h2>Why "Substance," Not "Any AI Audio"</h2>
-
-  <p>An earlier version of this framework said "any AI-generated audio triggers disclosure." We revised it because that's too strict and misaligns with how every major platform defines the obligation.</p>
-
-  <ol>
-    <li><strong>Apple says "material portion,"</strong> not "any portion." A 10-second AI jingle before 45 minutes of human conversation is not material.</li>
-    <li><strong>The listener test confirms it.</strong> Would a listener feel misled upon learning the 10-second intro was AI-voiced? Almost certainly not. Would they feel misled upon learning the entire narration was AI? Yes.</li>
-    <li><strong>Production elements are tools, not content.</strong> An AI-generated music bed is the same category as a stock music track from a library. An AI jingle is the same category as hiring a voice actor for a bumper.</li>
-    <li><strong>Strict rules punish transparency.</strong> If "any AI audio = disclose," creators who use a single AI sound effect get the same label as fully AI-generated shows. That makes the label meaningless.</li>
-  </ol>
-
-  <hr>
-
-  <!-- Why Binary -->
-  <h2>Why Binary Still Works</h2>
-
-  <p>Even though the <em>test</em> involves judgment (is this substance?), the <em>disclosure itself</em> remains binary: yes or no.</p>
-
-  <ol>
-    <li><strong>The explicit tag has been binary for 20 years.</strong> Podcasters don't agonize over "how explicit" their episode is. They check the box or they don't. It works because it's simple.</li>
-    <li><strong>Graduated systems create decision fatigue.</strong> "Is my show AI-assisted because I used ChatGPT for research?" That question shouldn't exist.</li>
-    <li><strong>Machines need binary signals.</strong> Directories, apps, and recommendation engines need a flag they can filter on. A boolean is actionable.</li>
-    <li><strong>Nuance belongs in show notes, not in tags.</strong> The tag says "AI is doing substantive creative work in this episode." The show notes say "here's how."</li>
-    <li><strong>No major platform uses percentage thresholds.</strong> Not Apple. Not YouTube. Not Meta. Not the EU AI Act.</li>
-  </ol>
-
-  <p><strong>The checkbox is not a punishment. It is a signal.</strong> Checking it does not mean your content is lesser. It means you're transparent about how your content was made.</p>
-
-  <hr>
-
-  <!-- Cross-Platform -->
-  <h2>Cross-Platform Alignment</h2>
-
-  <p>This framework was built by studying what every major platform and regulatory body requires:</p>
-
-  <table>
-    <thead><tr><th>Platform / Framework</th><th>Their Rule</th><th>This Framework</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Apple Podcasts</strong></td><td>Disclose when AI generates "a material portion of the podcast's audio"</td><td>"Material portion" = substance.</td></tr>
-      <tr><td><strong>YouTube</strong></td><td>Disclose "realistic altered or synthetic content." Exempt: scriptwriting, audio cleanup</td><td>Exempt list matches.</td></tr>
-      <tr><td><strong>Meta</strong></td><td>Label photorealistic AI video/audio. Auto-detect via C2PA</td><td>Audio substance maps to voice/narration rules.</td></tr>
-      <tr><td><strong>Spotify</strong></td><td>Three tiers: human, AI-assisted, fully AI-generated</td><td>Simpler binary, but compatible.</td></tr>
-      <tr><td><strong>EU AI Act</strong><br>Article 50, effective Aug 2026</td><td>Deepfakes must be disclosed. Fines up to 15M EUR / 3% global turnover</td><td>Prepares creators for EU compliance.</td></tr>
-      <tr><td><strong>FTC</strong> (US)</td><td>Deceptive AI endorsements violate Section 5. $51,744 per violation</td><td>Prevents deception by defaulting to transparency.</td></tr>
-      <tr><td><strong>TikTok</strong></td><td>Disclose realistic AI people/scenes. Auto-labels via C2PA</td><td>Aligned for audio equivalents.</td></tr>
-      <tr><td><strong>BBC</strong></td><td>All generative AI use must be disclosed</td><td>BBC's rule is stricter (we exempt production tools).</td></tr>
-      <tr><td><strong>Partnership on AI</strong></td><td>Material = voice/likeness clones. Immaterial = de-noising</td><td>Substance test mirrors their materiality framework.</td></tr>
-      <tr><td><strong>C2PA</strong></td><td>Cryptographic provenance chain in media files</td><td>Not yet in podcast audio, but conceptually aligned.</td></tr>
-    </tbody>
-  </table>
-
-  <hr>
-
-  <!-- Sources -->
-  <div class="sources-section">
-    <h2 id="sources">Sources &amp; References</h2>
-
-    <h3>Platform Policies</h3>
-    <ul>
-      <li><a href="https://podcasters.apple.com/support/891-content-and-subscription-guidelines" target="_blank">Apple Podcasts Content Guidelines (Sections 1.11 &amp; 1.12)</a></li>
-      <li><a href="https://support.google.com/youtube/answer/14328491" target="_blank">YouTube: Disclosing Altered or Synthetic Content</a></li>
-      <li><a href="https://about.fb.com/news/2024/04/metas-approach-to-labeling-ai-generated-content-and-manipulated-media/" target="_blank">Meta: Labeling AI-Generated Content</a></li>
-      <li><a href="https://newsroom.spotify.com/2025-09-25/spotify-strengthens-ai-protections/" target="_blank">Spotify: AI Protections (September 2025)</a></li>
-      <li><a href="https://newsroom.tiktok.com/en-us/new-labels-for-disclosing-ai-generated-content" target="_blank">TikTok: AI-Generated Content Labels</a></li>
-    </ul>
-
-    <h3>Regulatory</h3>
-    <ul>
-      <li><a href="https://artificialintelligenceact.eu/article/50/" target="_blank">EU AI Act, Article 50</a></li>
-      <li><a href="https://www.jonesday.com/en/insights/2026/01/european-commission-publishes-draft-code-of-practice-on-ai-labelling-and-transparency" target="_blank">EU Draft Code of Practice on AI Transparency (December 2025)</a></li>
-      <li><a href="https://www.ftc.gov/industry/technology/artificial-intelligence" target="_blank">FTC: Artificial Intelligence</a></li>
-      <li><a href="https://www.dglaw.com/ai-legal-updates-synthetic-performer-transparency-state-federal-conflict/" target="_blank">New York Synthetic Performer Law (effective June 2026)</a></li>
-      <li><a href="https://www.congress.gov/bill/119th-congress/house-bill/2794/text" target="_blank">NO FAKES Act (pending) — federal right of publicity for AI voice and likeness replicas</a></li>
-    </ul>
-
-    <h3>Industry Frameworks</h3>
-    <ul>
-      <li><a href="https://syntheticmedia.partnershiponai.org/" target="_blank">Partnership on AI: Responsible Practices for Synthetic Media</a></li>
-      <li><a href="https://contentauthenticity.org/how-it-works" target="_blank">C2PA / Content Authenticity Initiative</a></li>
-      <li><a href="https://www.broadcastnow.co.uk/production-and-post/7-things-you-need-to-know-about-the-bbcs-ai-guidance/5200901.article" target="_blank">BBC: AI Guidance for Content Production</a></li>
-    </ul>
-
-    <h3>Podcasting 2.0 Namespace Discussions</h3>
-    <ul>
-      <li><a href="https://github.com/Podcastindex-org/podcast-namespace/discussions/663" target="_blank">Discussion #663: Generative AI Disclosures</a></li>
-      <li><a href="https://github.com/Podcastindex-org/podcast-namespace/discussions/669" target="_blank">Discussion #669: podcast:disclosure proposal</a></li>
-    </ul>
-
-  </div>
-
-  <hr>
-
-  <!-- About -->
-  <h2>About This Framework</h2>
-
-  <p>Created by <a href="https://betella.net" style="color: var(--accent); text-decoration: none; font-weight: 500;">Alberto Betella, PhD</a>, co-founder of <a href="https://rss.com" style="color: var(--accent); text-decoration: none; font-weight: 500;">RSS.com</a>. This framework was built by researching what every major platform and regulatory body requires, then distilling it into a clear, actionable set of rules for podcasters. See <a href="#sources" style="color: var(--accent); text-decoration: none; font-weight: 500;">Sources &amp; References</a>.</p>
-
-  <p>This framework is offered as a public resource for the podcasting community. It is not legal advice. Each platform has its own AI disclosure policies, and those policies may change. Always check the specific requirements of the platforms where you distribute your podcast. By using this framework, you acknowledge it is general guidance and does not replace compliance with individual platform rules or applicable laws.</p>
-
-  <p><a href="index.html" style="color: var(--accent); text-decoration: none; font-weight: 500;">Try the interactive tool</a> to quickly determine whether your episode needs disclosure.</p>
-
-  <!-- Footer -->
-  <footer class="page-footer">
-    <div>
-      <a href="index.html">Interactive Tool</a>
+    <div class="progress-bar" id="progressBar">
+      <div class="progress-dot" id="dot0"></div>
+      <div class="progress-dot" id="dot1"></div>
+      <div class="progress-dot" id="dot2"></div>
+      <div class="progress-dot" id="dot3"></div>
+      <div class="progress-dot" id="dot4"></div>
+      <div class="progress-dot" id="dot5"></div>
     </div>
-    <div style="margin-top: 8px;">
+
+    <!-- Q1: AI voice (not yours) as performer? -->
+    <div class="question-container active" id="q0">
+      <div class="step-label">Question 1 of 6</div>
+      <div class="question-text">Is the episode narrated, hosted, or performed by an AI voice that is not yours?</div>
+      <div class="question-hint">A synthetic voice (not a clone of your own) delivers the core content of the episode.</div>
+      <div class="question-examples">
+        <strong>Examples</strong>
+        <ul>
+          <li>A text-to-speech voice narrates the episode</li>
+          <li>A NotebookLM-style AI conversation between synthetic hosts</li>
+          <li>Someone else's cloned voice (with or without permission)</li>
+          <li>An AI voice narrates most of the episode</li>
+        </ul>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-yes" onclick="answer('q0', true)">Yes</button>
+        <button class="btn" onclick="answer('q0', false)">No</button>
+      </div>
+    </div>
+
+    <!-- Q2: Did you clone YOUR OWN voice? -->
+    <div class="question-container" id="q1">
+      <div class="step-label">Question 2 of 6</div>
+      <div class="question-text">Did you clone your own voice to narrate this episode?</div>
+      <div class="question-hint">You used AI to generate audio in your own voice, rather than recording it yourself.</div>
+      <div class="question-examples">
+        <strong>Examples</strong>
+        <ul>
+          <li>You trained a voice model on your own recordings</li>
+          <li>You used a voice cloning service to produce the episode in your voice</li>
+          <li>Your cloned voice delivers the full episode or significant portions</li>
+        </ul>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-yes" onclick="answer('q1', true)">Yes</button>
+        <button class="btn" onclick="answer('q1', false)">No</button>
+      </div>
+    </div>
+
+    <!-- Q3: (if self-cloned) Did YOU write the script? -->
+    <div class="question-container" id="q2">
+      <div class="step-label">Question 3 of 6</div>
+      <div class="question-text">Did you write the script and create the content yourself?</div>
+      <div class="question-hint">The ideas, the research, the words, and the editorial judgment are yours. AI only generated the audio from your content.</div>
+      <div class="question-examples">
+        <strong>This means yes</strong>
+        <ul>
+          <li>You wrote the script (AI may have helped with typos or light edits)</li>
+          <li>You researched and structured the content, your cloned voice narrated it</li>
+          <li>The ideas, perspective, and editorial judgment are yours</li>
+        </ul>
+      </div>
+      <div class="question-examples">
+        <strong>This means no</strong>
+        <ul>
+          <li>AI generated the script (ChatGPT, Claude, etc.) and your cloned voice read it</li>
+          <li>AI wrote most of the content, you only edited lightly</li>
+        </ul>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-yes" onclick="answer('q2', true)">Yes, I wrote it</button>
+        <button class="btn" onclick="answer('q2', false)">No, AI wrote it</button>
+      </div>
+    </div>
+
+    <!-- Q4: AI voice delivering content segments? -->
+    <div class="question-container" id="q3">
+      <div class="step-label">Question 4 of 6</div>
+      <div class="question-text">Does an AI voice deliver content your listeners engage with as speech?</div>
+      <div class="question-hint">Not the main host, but AI speaks in content-delivering segments. The key: is AI producing speech that listeners consume as content, or is it a short production element?</div>
+      <div class="question-examples">
+        <strong>This means yes</strong>
+        <ul>
+          <li>AI reads listener questions between human discussion segments</li>
+          <li>AI narrates a section or chapter of the episode</li>
+          <li>AI voice delivers interview-style content</li>
+        </ul>
+      </div>
+      <div class="question-examples">
+        <strong>This means no</strong>
+        <ul>
+          <li>A short AI-voiced intro or outro bumper (production element)</li>
+          <li>An AI voice saying "This episode is brought to you by..." (a tag, not content)</li>
+        </ul>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-yes" onclick="answer('q3', true)">Yes</button>
+        <button class="btn" onclick="answer('q3', false)">No</button>
+      </div>
+    </div>
+
+    <!-- Q5: Did AI write the majority of the script/content? -->
+    <div class="question-container" id="q4">
+      <div class="step-label">Question 5 of 6</div>
+      <div class="question-text">Did AI generate the majority of your episode's script or spoken content?</div>
+      <div class="question-hint">Not brainstorming, research, or light editing. AI wrote the actual words your listeners hear.</div>
+      <div class="question-examples">
+        <strong>This means yes</strong>
+        <ul>
+          <li>AI generated the full script, you only lightly edited</li>
+          <li>AI wrote the monologue, narration, or dialogue</li>
+          <li>You prompted AI ("write a script about...") and recorded the output</li>
+        </ul>
+      </div>
+      <div class="question-examples">
+        <strong>This means no</strong>
+        <ul>
+          <li>You wrote the script, AI helped with research or outlines</li>
+          <li>AI fixed typos, grammar, or suggested minor edits</li>
+          <li>You used AI for brainstorming then wrote it yourself</li>
+        </ul>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-yes" onclick="answer('q4', true)">Yes, AI wrote it</button>
+        <button class="btn" onclick="answer('q4', false)">No, I wrote it</button>
+      </div>
+    </div>
+
+    <!-- Q6: AI for production / behind-the-scenes? -->
+    <div class="question-container" id="q5">
+      <div class="step-label">Question 6 of 6</div>
+      <div class="question-text">Did you use AI for production elements or behind-the-scenes work?</div>
+      <div class="question-hint">AI helped with production or your workflow, but a human is doing the creative work your listeners came for.</div>
+      <div class="question-examples">
+        <strong>Examples</strong>
+        <ul>
+          <li>Short AI-generated intro/outro voice bumper</li>
+          <li>AI-composed background music or sound effects</li>
+          <li>Noise removal, filler-word removal, audio leveling</li>
+          <li>AI-generated show notes, transcripts, titles, chapters</li>
+        </ul>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-yes" onclick="answer('q5', true)">Yes</button>
+        <button class="btn" onclick="answer('q5', false)">No</button>
+      </div>
+    </div>
+
+    <!-- Result: Disclose (AI voice) -->
+    <div class="result-container" id="resultDiscloseVoice">
+      <div class="result-disclose">
+        <div class="result-icon result-icon-yes"></div>
+        <div class="result-title">Yes, disclose it</div>
+        <div class="result-body">
+          AI is the voice delivering the substance of your episode. <strong>Label this episode with AI disclosure.</strong>
+        </div>
+        <div class="result-reason">
+          Apple Podcasts requires disclosure when AI generates "a material portion of the podcast's audio." When a synthetic voice (not your own) performs the narration, hosting, or conversation, AI is doing the creative work your listeners came for. YouTube, Meta, Spotify, and the EU AI Act (effective August 2026) all agree.
+        </div>
+        <button class="btn-restart" onclick="restart()">Start Over</button>
+      </div>
+    </div>
+
+    <!-- Result: Disclose (AI wrote content + cloned voice) -->
+    <div class="result-container" id="resultDiscloseClone">
+      <div class="result-disclose">
+        <div class="result-icon result-icon-yes"></div>
+        <div class="result-title">Yes, disclose it</div>
+        <div class="result-body">
+          AI wrote the content AND generated the audio. Even though it's your voice, <strong>AI is doing the creative work at every level.</strong> Label this episode with AI disclosure.
+        </div>
+        <div class="result-reason">
+          The substance test asks: is AI doing the creative work your listeners came for? When AI wrote the script and generated the voice, the ideas, the words, and the performance are all synthetic. Your voice is recognizable, but the creative substance is AI's. This is functionally the same as a fully AI-generated episode.
+        </div>
+        <button class="btn-restart" onclick="restart()">Start Over</button>
+      </div>
+    </div>
+
+    <!-- Result: Disclose (AI content segments) -->
+    <div class="result-container" id="resultDiscloseSegments">
+      <div class="result-disclose">
+        <div class="result-icon result-icon-yes"></div>
+        <div class="result-title">Yes, disclose it</div>
+        <div class="result-body">
+          An AI voice is delivering content your listeners engage with as speech. <strong>That's substance, not production.</strong> Label this episode with AI disclosure.
+        </div>
+        <div class="result-reason">
+          Even though AI isn't the main host, it's performing a substantive creative role: speaking words that listeners consume as content. This goes beyond production support (like a jingle or sound effect) into the territory of AI as performer. Apple's "material portion" standard covers this case.
+        </div>
+        <button class="btn-restart" onclick="restart()">Start Over</button>
+      </div>
+    </div>
+
+    <!-- Result: Disclose (human voice, AI-written content) -->
+    <div class="result-container" id="resultDiscloseScript">
+      <div class="result-disclose">
+        <div class="result-icon result-icon-yes"></div>
+        <div class="result-title">Yes, disclose it</div>
+        <div class="result-body">
+          AI wrote the content your listeners came for. Even though you're the voice, <strong>the creative substance is AI's work.</strong> Label this episode with AI disclosure.
+        </div>
+        <div class="result-reason">
+          The substance test asks: is AI doing the creative work your listeners came for? When AI generated the script, the ideas, the words, and the narrative are synthetic. You performed it, but the creative substance is AI's. This is similar to AI generating a video that a human uploads without changes.
+        </div>
+        <button class="btn-restart" onclick="restart()">Start Over</button>
+      </div>
+    </div>
+
+    <!-- Result: No disclosure (self-clone, own content) -->
+    <div class="result-container" id="resultNoClone">
+      <div class="result-no">
+        <div class="result-icon result-icon-no"></div>
+        <div class="result-title">No disclosure needed</div>
+        <div class="result-body">
+          You wrote the script. It's your voice. It's your ideas. <strong>The creative work your listeners came for is 100% yours.</strong> AI is just the delivery method.
+        </div>
+        <div class="result-reason">
+          The substance test asks: is AI doing the creative work your listeners came for? In this case, no. Your perspective, your expertise, your editorial judgment, and your personality are all human. AI generated the audio, but the creative substance is entirely yours. This is closer to choosing a production method (like dictating vs. typing) than to delegating creative work. That said, a note in your show notes ("This episode was produced using my cloned voice") is a nice transparency touch.
+        </div>
+        <button class="btn-restart" onclick="restart()">Start Over</button>
+      </div>
+    </div>
+
+    <!-- Result: No disclosure (production tools) -->
+    <div class="result-container" id="resultNoProduction">
+      <div class="result-no">
+        <div class="result-icon result-icon-no"></div>
+        <div class="result-title">No disclosure needed</div>
+        <div class="result-body">
+          AI is a <strong>production tool</strong>, not the performer. A human is doing the creative work your listeners came for.
+        </div>
+        <div class="result-reason">
+          Apple Podcasts requires disclosure when AI generates "a material portion of the podcast's audio." Production elements like intro jingles, music beds, sound effects, and audio cleanup are not the substance of the episode. YouTube, Meta, and the EU AI Act all explicitly exempt production assistance from disclosure requirements.
+        </div>
+        <button class="btn-restart" onclick="restart()">Start Over</button>
+      </div>
+    </div>
+
+    <!-- Result: No AI used -->
+    <div class="result-container" id="resultNone">
+      <div class="result-no">
+        <div class="result-icon result-icon-no"></div>
+        <div class="result-title">No disclosure needed</div>
+        <div class="result-body">
+          Based on your answers, <strong>AI was not involved in producing this episode</strong>. No disclosure is needed.
+        </div>
+        <button class="btn-restart" onclick="restart()">Start Over</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="principle">
+    <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-tertiary); font-weight: 700; margin-bottom: 4px;">The Substance Test</p>
+    <p>Is AI doing the creative work your listeners came for?</p>
+  </div>
+
+  <div class="quick-ref">
+    <h3>Quick Reference</h3>
+    <div class="ref-subtitle">AI as performer = disclose. AI as tool = don't disclose.</div>
+    <div class="ref-columns">
+      <div class="ref-col disclose">
+        <h4>AI as performer (disclose)</h4>
+        <ul>
+          <li>AI voice narrates the episode</li>
+          <li>AI conversation / dialogue</li>
+          <li>AI-translated episode</li>
+          <li>AI voice delivering content segments</li>
+          <li>Cloned voice + AI-written script</li>
+          <li>Human voice + fully AI-written script</li>
+        </ul>
+      </div>
+      <div class="ref-col no-disclose">
+        <h4>AI as tool (no disclosure)</h4>
+        <ul>
+          <li>Your cloned voice + your script</li>
+          <li>Short AI intro/outro bumper</li>
+          <li>AI background music / SFX</li>
+          <li>Noise removal / audio cleanup</li>
+          <li>Transcripts / show notes</li>
+          <li>AI-assisted research / brainstorming</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <a href="about.html" class="cta-banner">
+    <div class="cta-title">Read the Full Framework &amp; Sources <span class="cta-arrow">&rarr;</span></div>
+    <div class="cta-desc">What every major platform requires, cross-platform comparison, worked examples, and all references.</div>
+  </a>
+
+  <footer class="footer">
+    <div style="max-width: 480px; margin: 0 auto 12px; line-height: 1.6;">
+      This tool provides general guidance only, not legal advice. Each platform has its own AI disclosure rules. Always check the specific requirements of Apple Podcasts, Spotify, YouTube, and any other platform where you distribute your podcast.
+    </div>
+    <div>
       Built by <a href="https://betella.net" target="_blank">Alberto Betella</a>
       <span class="sep">|</span>
       <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>
@@ -558,6 +790,124 @@
   </footer>
 
 </div>
+
+<script>
+(function() {
+  'use strict';
+
+  // Fixed 6-dot progress bar. Each question has a fixed position.
+  // q0=0, q1=1, q2=2, q3=3, q4=4, q5=5
+  // Paths that skip questions just jump to the right dot position.
+  var dotMap = { q0: 0, q1: 1, q2: 2, q3: 3, q4: 4, q5: 5 };
+
+  function updateProgress(dotIndex) {
+    for (var i = 0; i < 6; i++) {
+      var dot = document.getElementById('dot' + i);
+      dot.className = 'progress-dot';
+      if (i < dotIndex) dot.className = 'progress-dot done';
+      if (i === dotIndex) dot.className = 'progress-dot active';
+    }
+  }
+
+  function hideAll() {
+    var items = document.querySelectorAll('.question-container, .result-container');
+    for (var i = 0; i < items.length; i++) {
+      items[i].classList.remove('active');
+    }
+  }
+
+  function showQuestion(id) {
+    hideAll();
+    var el = document.getElementById(id);
+    el.classList.add('active');
+    var pos = dotMap[id] + 1; // 1-based position
+    var label = el.querySelector('.step-label');
+    if (label) label.textContent = 'Question ' + pos + ' of 6';
+    document.getElementById('progressBar').style.display = 'flex';
+    updateProgress(dotMap[id]);
+  }
+
+  function showResult(id) {
+    hideAll();
+    document.getElementById('progressBar').style.display = 'none';
+    document.getElementById(id).classList.add('active');
+  }
+
+  window.answer = function(questionId, value) {
+
+    // Q1: AI voice (not yours) as performer?
+    if (questionId === 'q0') {
+      if (value) {
+        showResult('resultDiscloseVoice');
+      } else {
+        showQuestion('q1');
+      }
+      return;
+    }
+
+    // Q2: Did you clone your own voice?
+    if (questionId === 'q1') {
+      if (value) {
+        // Yes, cloned own voice -> ask about creative substance
+        showQuestion('q2');
+      } else {
+        // No cloning -> ask about AI-written script first
+        // Path: q3 (voice segments) -> q4 (script) -> q5 (production)
+        showQuestion('q3');
+      }
+      return;
+    }
+
+    // Q3: (self-clone path) Did you write the script?
+    if (questionId === 'q2') {
+      if (value) {
+        showResult('resultNoClone');
+      } else {
+        showResult('resultDiscloseClone');
+      }
+      return;
+    }
+
+    // Q4: AI voice delivering content segments?
+    if (questionId === 'q3') {
+      if (value) {
+        showResult('resultDiscloseSegments');
+      } else {
+        showQuestion('q4');
+      }
+      return;
+    }
+
+    // Q5: Did AI write the majority of the script?
+    if (questionId === 'q4') {
+      if (value) {
+        showResult('resultDiscloseScript');
+      } else {
+        showQuestion('q5');
+      }
+      return;
+    }
+
+    // Q6: AI for production / behind-the-scenes?
+    if (questionId === 'q5') {
+      if (value) {
+        showResult('resultNoProduction');
+      } else {
+        showResult('resultNone');
+      }
+      return;
+    }
+  };
+
+  window.restart = function() {
+    document.getElementById('progressBar').style.display = 'flex';
+    showQuestion('q0');
+  };
+
+  // Initial state
+  showQuestion('q0');
+})();
+</script>
 
 <script data-goatcounter="https://shouldidisclose.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
