@@ -494,11 +494,12 @@
       <div class="progress-dot" id="dot2"></div>
       <div class="progress-dot" id="dot3"></div>
       <div class="progress-dot" id="dot4"></div>
+      <div class="progress-dot" id="dot5"></div>
     </div>
 
     <!-- Q1: AI voice (not yours) as performer? -->
     <div class="question-container active" id="q0">
-      <div class="step-label">Question 1 of 5</div>
+      <div class="step-label">Question 1 of 6</div>
       <div class="question-text">Is the episode narrated, hosted, or performed by an AI voice that is not yours?</div>
       <div class="question-hint">A synthetic voice (not a clone of your own) delivers the core content of the episode.</div>
       <div class="question-examples">
@@ -518,7 +519,7 @@
 
     <!-- Q2: Did you clone YOUR OWN voice? -->
     <div class="question-container" id="q1">
-      <div class="step-label">Question 2 of 5</div>
+      <div class="step-label">Question 2 of 6</div>
       <div class="question-text">Did you clone your own voice to narrate this episode?</div>
       <div class="question-hint">You used AI to generate audio in your own voice, rather than recording it yourself.</div>
       <div class="question-examples">
@@ -537,15 +538,15 @@
 
     <!-- Q3: (if self-cloned) Did YOU write the script? -->
     <div class="question-container" id="q2">
-      <div class="step-label">Question 3 of 5</div>
+      <div class="step-label">Question 3 of 6</div>
       <div class="question-text">Did you write the script and create the content yourself?</div>
       <div class="question-hint">The ideas, the research, the words, and the editorial judgment are yours. AI only generated the audio from your content.</div>
       <div class="question-examples">
         <strong>This means yes</strong>
         <ul>
-          <li>You wrote the full script, AI just voiced it</li>
+          <li>You wrote the script (AI may have helped with typos or light edits)</li>
           <li>You researched and structured the content, AI delivered your words</li>
-          <li>The perspective, expertise, and personality are 100% yours</li>
+          <li>The ideas, perspective, and editorial judgment are yours</li>
         </ul>
       </div>
       <div class="question-examples">
@@ -563,7 +564,7 @@
 
     <!-- Q4: AI voice delivering content segments? -->
     <div class="question-container" id="q3">
-      <div class="step-label">Question 4 of 5</div>
+      <div class="step-label">Question 4 of 6</div>
       <div class="question-text">Does an AI voice deliver content your listeners engage with as speech?</div>
       <div class="question-hint">Not the main host, but AI speaks in content-delivering segments. The key: is AI producing speech that listeners consume as content, or is it a short production element?</div>
       <div class="question-examples">
@@ -587,9 +588,36 @@
       </div>
     </div>
 
-    <!-- Q5: AI for production / behind-the-scenes? -->
+    <!-- Q5: Did AI write the majority of the script/content? -->
     <div class="question-container" id="q4">
-      <div class="step-label">Question 5 of 5</div>
+      <div class="step-label">Question 5 of 6</div>
+      <div class="question-text">Did AI generate the majority of your episode's script or spoken content?</div>
+      <div class="question-hint">Not brainstorming, research, or light editing. AI wrote the actual words your listeners hear.</div>
+      <div class="question-examples">
+        <strong>This means yes</strong>
+        <ul>
+          <li>AI generated the full script, you only lightly edited</li>
+          <li>AI wrote the monologue, narration, or dialogue</li>
+          <li>You prompted AI ("write a script about...") and recorded the output</li>
+        </ul>
+      </div>
+      <div class="question-examples">
+        <strong>This means no</strong>
+        <ul>
+          <li>You wrote the script, AI helped with research or outlines</li>
+          <li>AI fixed typos, grammar, or suggested minor edits</li>
+          <li>You used AI for brainstorming then wrote it yourself</li>
+        </ul>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-yes" onclick="answer('q4', true)">Yes, AI wrote it</button>
+        <button class="btn" onclick="answer('q4', false)">No, I wrote it</button>
+      </div>
+    </div>
+
+    <!-- Q6: AI for production / behind-the-scenes? -->
+    <div class="question-container" id="q5">
+      <div class="step-label">Question 6 of 6</div>
       <div class="question-text">Did you use AI for production elements or behind-the-scenes work?</div>
       <div class="question-hint">AI helped with production or your workflow, but a human is doing the creative work your listeners came for.</div>
       <div class="question-examples">
@@ -598,13 +626,12 @@
           <li>Short AI-generated intro/outro voice bumper</li>
           <li>AI-composed background music or sound effects</li>
           <li>Noise removal, filler-word removal, audio leveling</li>
-          <li>Scriptwriting help, research, brainstorming</li>
           <li>AI-generated show notes, transcripts, titles, chapters</li>
         </ul>
       </div>
       <div class="btn-group">
-        <button class="btn btn-yes" onclick="answer('q4', true)">Yes</button>
-        <button class="btn" onclick="answer('q4', false)">No</button>
+        <button class="btn btn-yes" onclick="answer('q5', true)">Yes</button>
+        <button class="btn" onclick="answer('q5', false)">No</button>
       </div>
     </div>
 
@@ -648,6 +675,21 @@
         </div>
         <div class="result-reason">
           Even though AI isn't the main host, it's performing a substantive creative role: speaking words that listeners consume as content. This goes beyond production support (like a jingle or sound effect) into the territory of AI as performer. Apple's "material portion" standard covers this case.
+        </div>
+        <button class="btn-restart" onclick="restart()">Start Over</button>
+      </div>
+    </div>
+
+    <!-- Result: Disclose (human voice, AI-written content) -->
+    <div class="result-container" id="resultDiscloseScript">
+      <div class="result-disclose">
+        <div class="result-icon result-icon-yes"></div>
+        <div class="result-title">Yes, disclose it</div>
+        <div class="result-body">
+          AI wrote the content your listeners came for. Even though you're the voice, <strong>the creative substance is AI's work.</strong> Label this episode with AI disclosure.
+        </div>
+        <div class="result-reason">
+          The substance test asks: is AI doing the creative work your listeners came for? When AI generated the script, the ideas, the words, and the narrative are synthetic. You performed it, but the creative substance is AI's. This is similar to AI generating a video that a human uploads without changes.
         </div>
         <button class="btn-restart" onclick="restart()">Start Over</button>
       </div>
@@ -714,6 +756,7 @@
           <li>AI-translated episode</li>
           <li>AI voice delivering content segments</li>
           <li>Cloned voice + AI-written script</li>
+          <li>Human voice + fully AI-written script</li>
         </ul>
       </div>
       <div class="ref-col no-disclose">
@@ -724,7 +767,7 @@
           <li>AI background music / SFX</li>
           <li>Noise removal / audio cleanup</li>
           <li>Transcripts / show notes</li>
-          <li>Scriptwriting / research</li>
+          <li>AI-assisted research / brainstorming</li>
         </ul>
       </div>
     </div>
@@ -752,16 +795,26 @@
 (function() {
   'use strict';
 
-  var totalDots = 5;
+  var totalDots = 6;
+  var visibleDots = 6;
   var currentDot = 0;
+  var stepNumber = 0;
 
   // Map question IDs to their dot index in the progress bar.
   // Some paths skip questions, so we track which dot we're on.
-  var dotMap = { q0: 0, q1: 1, q2: 2, q3: 3, q4: 4 };
+  var dotMap = { q0: 0, q1: 1, q2: 2, q3: 3, q4: 4, q5: 5 };
+
+  function setVisibleDots(count) {
+    visibleDots = count;
+    for (var i = 0; i < totalDots; i++) {
+      var dot = document.getElementById('dot' + i);
+      dot.style.display = i < visibleDots ? '' : 'none';
+    }
+  }
 
   function updateProgress(activeDot) {
     currentDot = activeDot;
-    for (var i = 0; i < totalDots; i++) {
+    for (var i = 0; i < visibleDots; i++) {
       var dot = document.getElementById('dot' + i);
       dot.className = 'progress-dot';
       if (i < currentDot) dot.className = 'progress-dot done';
@@ -778,7 +831,11 @@
 
   function showQuestion(id) {
     hideAll();
-    document.getElementById(id).classList.add('active');
+    stepNumber++;
+    var el = document.getElementById(id);
+    el.classList.add('active');
+    var label = el.querySelector('.step-label');
+    if (label) label.textContent = 'Question ' + stepNumber + ' of ' + visibleDots;
     updateProgress(dotMap[id]);
   }
 
@@ -803,14 +860,17 @@
     // Q2: Did you clone your own voice?
     if (questionId === 'q1') {
       if (value) {
-        // Yes, cloned own voice -> ask about creative substance
+        // Yes, cloned own voice -> ask about creative substance (3 questions total)
+        setVisibleDots(3);
         showQuestion('q2');
       } else {
-        // No cloning -> skip to content segments question
-        // Remap: q3 follows q1 directly, adjust dot
-        dotMap.q3 = 2;
-        dotMap.q4 = 3;
-        showQuestion('q3');
+        // No cloning -> ask about AI-written script first
+        // Path: q4 (script) -> q3 (voice segments) -> q5 (production) = 5 questions total
+        setVisibleDots(5);
+        dotMap.q4 = 2;
+        dotMap.q3 = 3;
+        dotMap.q5 = 4;
+        showQuestion('q4');
       }
       return;
     }
@@ -832,13 +892,23 @@
       if (value) {
         showResult('resultDiscloseSegments');
       } else {
-        showQuestion('q4');
+        showQuestion('q5');
       }
       return;
     }
 
-    // Q5: AI for production / behind-the-scenes?
+    // Q5: Did AI write the majority of the script?
     if (questionId === 'q4') {
+      if (value) {
+        showResult('resultDiscloseScript');
+      } else {
+        showQuestion('q3');
+      }
+      return;
+    }
+
+    // Q6: AI for production / behind-the-scenes?
+    if (questionId === 'q5') {
       if (value) {
         showResult('resultNoProduction');
       } else {
@@ -850,12 +920,17 @@
 
   window.restart = function() {
     // Reset dot map
-    dotMap = { q0: 0, q1: 1, q2: 2, q3: 3, q4: 4 };
+    dotMap = { q0: 0, q1: 1, q2: 2, q3: 3, q4: 4, q5: 5 };
+    stepNumber = 0;
+    setVisibleDots(6);
     document.getElementById('progressBar').style.display = 'flex';
     showQuestion('q0');
   };
 
-  updateProgress(0);
+  // Initial state: show all 6 dots, step 0
+  stepNumber = 0;
+  setVisibleDots(6);
+  showQuestion('q0');
 })();
 </script>
 
